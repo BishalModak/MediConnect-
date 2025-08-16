@@ -17,15 +17,21 @@ class DoctorDetailScreen extends StatelessWidget {
 
     // Function to launch phone dialer
     void _launchCaller(String phone) async {
-      final Uri callUri = Uri(scheme: 'tel', path: phone);
+      final String cleanedPhone = phone.replaceAll(" ", "");
+      final Uri callUri = Uri(scheme: 'tel', path: cleanedPhone);
+
       if (await canLaunchUrl(callUri)) {
-        await launchUrl(callUri);
+        await launchUrl(
+          callUri,
+          mode: LaunchMode.externalApplication,
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Could not open the phone dialer')),
         );
       }
     }
+
 
     return Scaffold(
       appBar: AppBar(
