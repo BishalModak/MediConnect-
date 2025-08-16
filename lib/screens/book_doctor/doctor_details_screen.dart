@@ -9,9 +9,11 @@ class DoctorDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String doctorName = doctor['name'] ?? 'Doctor Name';
-    final String specialization = doctor['specialization'] ?? 'General Practitioner';
+    final String specialization =
+        doctor['specialization'] ?? 'General Practitioner';
     final String info = doctor['info'] ?? 'No detailed information available.';
-    final String? phoneNumber = doctor['phone_number'] ?? "+880123456789"; // Demo number fallback
+    final String? phoneNumber =
+        doctor['phone_number'] ?? "+880123456789"; // Demo number fallback
     final String? address = doctor['address'];
     final String? workingHours = doctor['working_hours'];
 
@@ -21,10 +23,7 @@ class DoctorDetailScreen extends StatelessWidget {
       final Uri callUri = Uri(scheme: 'tel', path: cleanedPhone);
 
       if (await canLaunchUrl(callUri)) {
-        await launchUrl(
-          callUri,
-          mode: LaunchMode.externalApplication,
-        );
+        await launchUrl(callUri, mode: LaunchMode.externalApplication);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Could not open the phone dialer')),
@@ -32,12 +31,8 @@ class DoctorDetailScreen extends StatelessWidget {
       }
     }
 
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(doctorName),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text(doctorName), elevation: 0),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -82,7 +77,9 @@ class DoctorDetailScreen extends StatelessWidget {
               ),
               Card(
                 elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 margin: const EdgeInsets.only(bottom: 16),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -91,7 +88,11 @@ class DoctorDetailScreen extends StatelessWidget {
                     children: [
                       const Text(
                         'About Doctor',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey,
+                        ),
                       ),
                       const Divider(height: 16, thickness: 1),
                       Text(
@@ -103,10 +104,14 @@ class DoctorDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              if (phoneNumber != null || address != null || workingHours != null)
+              if (phoneNumber != null ||
+                  address != null ||
+                  workingHours != null)
                 Card(
                   elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   margin: const EdgeInsets.only(bottom: 24),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -115,24 +120,37 @@ class DoctorDetailScreen extends StatelessWidget {
                       children: [
                         const Text(
                           'Contact & Location',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
+                          ),
                         ),
                         const Divider(height: 16, thickness: 1),
                         if (phoneNumber != null)
                           ListTile(
-                            leading: const Icon(Icons.phone, color: Colors.green),
+                            leading: const Icon(
+                              Icons.phone,
+                              color: Colors.green,
+                            ),
                             title: Text(phoneNumber),
                             dense: true,
                           ),
                         if (address != null)
                           ListTile(
-                            leading: const Icon(Icons.location_on, color: Colors.red),
+                            leading: const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                            ),
                             title: Text(address),
                             dense: true,
                           ),
                         if (workingHours != null)
                           ListTile(
-                            leading: const Icon(Icons.access_time, color: Colors.purple),
+                            leading: const Icon(
+                              Icons.access_time,
+                              color: Colors.purple,
+                            ),
                             title: Text(workingHours),
                             dense: true,
                           ),
@@ -148,7 +166,9 @@ class DoctorDetailScreen extends StatelessWidget {
                     'Call Doctor',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () => _launchCaller(phoneNumber!), // non-null now because of fallback
+                  onPressed: () => _launchCaller(
+                    phoneNumber!,
+                  ), // non-null now because of fallback
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                     foregroundColor: Colors.white,
