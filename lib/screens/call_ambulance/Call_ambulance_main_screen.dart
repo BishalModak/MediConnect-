@@ -209,6 +209,30 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
     });
   }
 
+  // getAddressFromLatLng() async {
+  //   try {
+  //     GeoData data = await Geocoder2.getDataFromCoordinates(
+  //       latitude: pickLocation!.latitude,
+  //       longitude: pickLocation!.longitude,
+  //       googleMapApiKey: mapkey,
+  //     );
+  //     setState(() {
+  //       Direction userPickupAddress = Direction();
+  //       userPickupAddress.locationLatitude = pickLocation!.latitude;
+  //       userPickupAddress.locationLongitude = pickLocation!.longitude;
+  //       userPickupAddress.locationName = data.address;
+  //       Provider.of<AppInfo>(
+  //         context,
+  //         listen: false,
+  //       ).updatePickUpLocationAddress(userPickupAddress);
+  //       //_address = data.address;
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+
   checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
 
@@ -243,8 +267,26 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                 setState(() {});
                 locateUserPosition();
               },
+              // onCameraMove: ((CameraPosition? position) {
+              //   if (pickLocation != position!.target) {
+              //     setState(() {
+              //       pickLocation = position.target;
+              //     });
+              //   }
+              // }),
+              // onCameraIdle: () {
+              //   getAddressFromLatLng();
+              // },
             ),
+            // Align(
+            //   alignment: Alignment.center,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom: 35.0),
+            //     child: Image.asset("images/pick.png", height: 45, width: 45),
+            //   ),
+            // ),
 
+            //ui for searching Location
             Positioned(
               top: 20,
               left: 20,
@@ -396,6 +438,26 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                 ),
               ),
             ),
+
+            // Positioned(
+            //   top: 40,
+            //   right: 20,
+            //   left: 20,
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       border: Border.all(color: Colors.black),
+            //       color: Colors.white,
+            //     ),
+            //     padding: EdgeInsets.all(20),
+            //     child: Text(
+            //       Provider.of<AppInfo>(context).userPickUpLocation != null
+            //           ? (Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0,24)+"..."
+            //           : "Not Getting Address",
+            //       overflow: TextOverflow.visible,
+            //       softWrap: true,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
