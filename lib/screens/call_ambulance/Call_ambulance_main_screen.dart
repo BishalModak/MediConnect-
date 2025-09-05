@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mediconnect/screens/call_ambulance/precise_pickup_location.dart';
 import 'package:mediconnect/screens/call_ambulance/search_places_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,8 @@ class CallAmbulanceMainScreen extends StatefulWidget {
   const CallAmbulanceMainScreen({super.key});
 
   @override
-  State<CallAmbulanceMainScreen> createState() => _CallAmbulanceMainScreenState();
+  State<CallAmbulanceMainScreen> createState() =>
+      _CallAmbulanceMainScreenState();
 }
 
 class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
@@ -79,35 +81,50 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
     );
 
     String humanReadableAddress =
-    await AssistentMethods.searchAddressForGeographicCoOrdinates(
-      userCurrentPosition!,
-      context,
-    );
+        await AssistentMethods.searchAddressForGeographicCoOrdinates(
+          userCurrentPosition!,
+          context,
+        );
     print("This is our address = " + humanReadableAddress);
 
     userName = userModelCurrentInfo!.name!;
     userEmail = userModelCurrentInfo!.email!;
+
+    // InitialLizeGeoFireListener();
+    //
+    // AssistentMethods.readTripsKeyForOnlineUser(context);
   }
 
   Future<void> drawPolyLineFromOriginToDestination() async {
-    var originPosition =
-        Provider.of<AppInfo>(context, listen: false).userPickUpLocation;
-    var destinationPosition =
-        Provider.of<AppInfo>(context, listen: false).userDropOffLocation;
+    var originPosition = Provider.of<AppInfo>(
+      context,
+      listen: false,
+    ).userPickUpLocation;
+    var destinationPosition = Provider.of<AppInfo>(
+      context,
+      listen: false,
+    ).userDropOffLocation;
 
     var originLatLng = LatLng(
-        originPosition!.locationLatitude!, originPosition!.locationLongitude!);
+      originPosition!.locationLatitude!,
+      originPosition!.locationLongitude!,
+    );
     var destinationLatLng = LatLng(
-        destinationPosition!.locationLatitude!,
-        destinationPosition!.locationLongitude!);
+      destinationPosition!.locationLatitude!,
+      destinationPosition!.locationLongitude!,
+    );
 
     showDialog(
       context: context,
-      builder: (BuildContext contex) => ProgressDialog(message: "Please wait...."),
+      builder: (BuildContext contex) =>
+          ProgressDialog(message: "Please wait...."),
     );
 
-    var directionDetailsinfo = await AssistentMethods
-        .obtainOriginToDestinationDirectionDetails(originLatLng, destinationLatLng);
+    var directionDetailsinfo =
+        await AssistentMethods.obtainOriginToDestinationDirectionDetails(
+          originLatLng,
+          destinationLatLng,
+        );
 
     setState(() {
       tripDirectionDetailsInfo = directionDetailsinfo;
@@ -116,14 +133,15 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
     Navigator.pop(context);
 
     List<PointLatLng> decodePolyLinePointsResultList =
-    PolylinePoints.decodePolyline(directionDetailsinfo.e_point!);
+        PolylinePoints.decodePolyline(directionDetailsinfo.e_point!);
 
     pLineCoordinationList.clear();
 
     if (decodePolyLinePointsResultList.isNotEmpty) {
       decodePolyLinePointsResultList.forEach((PointLatLng pointlatlng) {
-        pLineCoordinationList
-            .add(LatLng(pointlatlng.latitude, pointlatlng.longitude));
+        pLineCoordinationList.add(
+          LatLng(pointlatlng.latitude, pointlatlng.longitude),
+        );
       });
     }
 
@@ -147,7 +165,10 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
 
     if (originLatLng.latitude > destinationLatLng.latitude &&
         originLatLng.latitude > destinationLatLng.longitude) {
-      boundsLatLng = LatLngBounds(southwest: destinationLatLng, northeast: originLatLng);
+      boundsLatLng = LatLngBounds(
+        southwest: destinationLatLng,
+        northeast: originLatLng,
+      );
     } else if (originLatLng.longitude > destinationLatLng.longitude) {
       boundsLatLng = LatLngBounds(
         southwest: LatLng(originLatLng.latitude, destinationLatLng.longitude),
@@ -159,7 +180,10 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
         northeast: LatLng(originLatLng.latitude, destinationLatLng.longitude),
       );
     } else {
-      boundsLatLng = LatLngBounds(southwest: originLatLng, northeast: destinationLatLng);
+      boundsLatLng = LatLngBounds(
+        southwest: originLatLng,
+        northeast: destinationLatLng,
+      );
     }
 
     newGoogleMapController!.animateCamera(
@@ -168,14 +192,20 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
 
     Marker originMarker = Marker(
       markerId: MarkerId("originID"),
-      infoWindow: InfoWindow(title: originPosition.locationName, snippet: "Origin"),
+      infoWindow: InfoWindow(
+        title: originPosition.locationName,
+        snippet: "Origin",
+      ),
       position: originLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
     );
 
     Marker destinationMarker = Marker(
       markerId: MarkerId("destinationID"),
-      infoWindow: InfoWindow(title: destinationPosition.locationName, snippet: "Destination"),
+      infoWindow: InfoWindow(
+        title: destinationPosition.locationName,
+        snippet: "Destination",
+      ),
       position: destinationLatLng,
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
@@ -231,7 +261,6 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
   //     print(e);
   //   }
   // }
-
 
   checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
@@ -303,7 +332,6 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
               ),
             ),
 
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -338,7 +366,8 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                       ),
                                       SizedBox(height: 10),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'From',
@@ -349,8 +378,15 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                             ),
                                           ),
                                           Text(
-                                            Provider.of<AppInfo>(context).userPickUpLocation != null
-                                                ? (Provider.of<AppInfo>(context).userPickUpLocation!.locationName!).substring(0, 24) + "..."
+                                            Provider.of<AppInfo>(
+                                                      context,
+                                                    ).userPickUpLocation !=
+                                                    null
+                                                ? (Provider.of<AppInfo>(context)
+                                                              .userPickUpLocation!
+                                                              .locationName!)
+                                                          .substring(0, 24) +
+                                                      "..."
                                                 : "Not Getting Address",
                                             style: TextStyle(
                                               color: Colors.grey,
@@ -377,14 +413,17 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                   padding: EdgeInsets.all(5),
                                   child: GestureDetector(
                                     onTap: () async {
-                                      var responseFromSearchScreen = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SearchPlacesScreen(),
-                                        ),
-                                      );
+                                      var responseFromSearchScreen =
+                                          await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchPlacesScreen(),
+                                            ),
+                                          );
 
-                                      if (responseFromSearchScreen == "obtainedDropoff") {
+                                      if (responseFromSearchScreen ==
+                                          "obtainedDropoff") {
                                         setState(() {
                                           openNavigationDrawer = false;
                                         });
@@ -402,7 +441,8 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                           ),
                                           SizedBox(width: 10),
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 'To',
@@ -413,8 +453,20 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                Provider.of<AppInfo>(context).userDropOffLocation != null
-                                                    ? Provider.of<AppInfo>(context).userDropOffLocation!.locationName!.substring(0, 24) + "..."
+                                                Provider.of<AppInfo>(
+                                                          context,
+                                                        ).userDropOffLocation !=
+                                                        null
+                                                    ? Provider.of<AppInfo>(
+                                                                context,
+                                                              )
+                                                              .userDropOffLocation!
+                                                              .locationName!
+                                                              .substring(
+                                                                0,
+                                                                24,
+                                                              ) +
+                                                          "..."
                                                     : "Where To",
                                                 style: TextStyle(
                                                   color: Colors.grey,
@@ -430,6 +482,53 @@ class _CallAmbulanceMainScreenState extends State<CallAmbulanceMainScreen> {
                                 ),
                               ],
                             ),
+                          ),
+
+                          SizedBox(height: 5),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PrecisePickupLocation(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Change Pick Up",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Call Ambulance",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
