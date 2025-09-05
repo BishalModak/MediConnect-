@@ -19,62 +19,6 @@ class DiseaseListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Select Disease')),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 38,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Bisha Modak',
-                    style: const TextStyle(color: Colors.white, fontSize: 25),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  Text(
-                    'bishalmodak@gmail.com',
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: const Text('Home'),
-              leading: const Icon(Icons.home),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> UserHomeScreen()));
-              },
-            ),
-            const Divider(
-              thickness: 1,
-              color: Colors.blue,
-              indent: 16,
-              endIndent: 16,
-            ),
-            const Divider(
-              thickness: 1,
-              color: Colors.blue,
-              indent: 16,
-              endIndent: 16,
-            ),
-          ],
-        ),
-      ),
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: diseases.map((disease) {
