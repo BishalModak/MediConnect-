@@ -136,6 +136,7 @@ class _signInScreenState extends State<signInScreen> {
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
+                SizedBox(height: 10,),
                 RichText(
                   text: TextSpan(
                     text: "Don't Have an Account? ",

@@ -77,7 +77,7 @@ class _signUpScreenState extends State<signUpScreen> {
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Form(
-            key: _formKey, // <-- FormKey added here
+            key: _formKey,
             child: Column(
               children: [
                 const Text(

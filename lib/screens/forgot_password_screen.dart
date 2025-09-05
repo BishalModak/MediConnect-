@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mediconnect/widgets/LoginAppbar.dart';
 import 'call_ambulance/global/global.dart';
 import 'sign_in_screen.dart';
 
@@ -32,6 +33,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        appBar: loginAppbar(),
         body: ListView(
           padding: EdgeInsets.all(0),
           children: [
